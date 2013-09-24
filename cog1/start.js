@@ -39,7 +39,7 @@ require(["dojo", "dojo/parser", "dojo/domReady!"], function(dojo) {
 		paths : {
 			// Absolute path to cog1 project, local directory without
 			// HTTP-server:
-			"cog1" : "/Users/felixgers/BHT/src/cog1/cog1_JS_template/cog1"
+            "cog1" : "/Users/marcelwallbaum/github/Computergrafik1-WS1314/cog1"
 			//"cog1" : "/Users/felixgers/BHT/src/cog1/cog1_JS_template/cog1"
 			//"cog1" : "/home/felix/BHT/src/cog1/cog1_JS_template/cog1"
 			// "cog1" : "file:///U:/BHT/src/cog1/cog1_JS_template"
