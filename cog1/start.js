@@ -39,13 +39,12 @@ require(["dojo", "dojo/parser", "dojo/domReady!"], function(dojo) {
 		paths : {
 			// Absolute path to cog1 project, local directory without
 			// HTTP-server:
-            "cog1" : "/Users/marcelwallbaum/github/Computergrafik1-WS1314/cog1"
-			//"cog1" : "/Users/felixgers/BHT/src/cog1/cog1_JS_template/cog1"
-			//"cog1" : "/home/felix/BHT/src/cog1/cog1_JS_template/cog1"
-			// "cog1" : "file:///U:/BHT/src/cog1/cog1_JS_template"
-			// On same [maybe local] HTTP-server as used to load dojo:
-			// "cog1" : "/src/cog1/cog1_JS_template/cog1"
-			// "cog1" : "/~gers/cog1_sol/cog1"
+            // to work on MacBook:
+            // "cog1" : "/Users/marcelwallbaum/github/Computergrafik1-WS1314/cog1"
+            // to work on Windows:
+			 "cog1" : "file:///C:/Users/Admin/PhpstormProjects/Computergrafik1_WS1314/cog1"
+            // to work on Server:
+            // "cog1" : "/marcelwallbaum/cog1/"
 		},
 		// Add one entry for each custom module.
 		// This is, among others, necessary to apply the path parameter.
