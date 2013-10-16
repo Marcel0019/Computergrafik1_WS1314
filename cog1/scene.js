@@ -418,7 +418,7 @@ function(exports, dojo, domStyle, app, scenegraph, createScene, animation, raste
 			if(displayEdges) {
 				raster.scanlineStrokePolygon(vertices, polygon, lineColor3D);
 			}
-        // count polygons
+        // count polys
         polycount++;
 		}
 	}

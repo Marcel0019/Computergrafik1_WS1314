@@ -129,36 +129,60 @@ function(exports, shader, framebuffer, data) {
 
 		// BEGIN exercise Bresenham
 		// Comment out the next two lines.
-		drawLine(startX, startY, endX, endY, color);
-		return;
+		//drawLine(startX, startY, endX, endY, color);
+		//return;
 
-		// Skip it, if the line is just a point.
+        //init variables for x and y, which will be incremented
+        var inc_x = 1;
+        var inc_y = 1;
 
+        //check if deltaX is negative and change to decrement
+        if(dX < 0) {
+            dX = -dX;
+            inc_x = -1;
+        }
 
-		// Optionally draw start point as is the same
-		// as the end point of the previous edge.
-		// In any case, do not add an intersection for start point here,
-		// this should happen later in the scanline function.
+        //check if deltaY is negative and change to decrement
+        if(dY < 0) {
+            dY = -dY;
+            inc_y = -1;
+        }
 
+        //auxiliary variable a and b
+        var a = 2*dX;
+        var b = 2*dY;
 
-		// Distinction of cases for driving variable.
+        // Distinction of cases for driving variable.
+        if(dXAbs >= dYAbs){
+            e = -Math.abs(dX);
 
-			// x is driving variable.
+            // x is driving variable
+            while (x != endX){
+                framebuffer.set(x, y, getZ(x, y), color);
+                e = e + b;
+                if (e > 0){
+                    y += inc_y;
+                    e = e - a;
+                }
+                x += inc_x;
+            } //end while loop
+        } else {
+            // y is driving variable
+            e = -Math.abs(dY);
 
-						// Do not add intersections for points on horizontal line
-						// and not the end point, which is done in scanline.
-
-					//framebuffer.set(x, y, getZ(x, y), color);
-
-			// y is driving variable.
-
-					// Add every intersection as there can be only one per scan line.
-					// but not the end point, which is done in scanline.
-
-						//framebuffer.set(x, y, getZ(x, y), color);
-		
-		// END exercise Bresenham		
-	};
+            while (y != endY){
+                framebuffer.set(x, y, getZ(x, y), color);
+                e = e + a;
+                if (e > 0){
+                    x += inc_x;
+                    e = e - b;
+                }
+                y += inc_y;
+            } //end while loop
+        }
+        framebuffer.set(x, y, getZ(x, y), color);
+        // END exercise Bresenham
+    };
 
 	/**
 	 * Draw edges of given polygon. See also scanlineFillPolygon().
@@ -607,9 +631,9 @@ function(exports, shader, framebuffer, data) {
 		var z = -(A * x + B * y + D) * inverseC;
 
 		// Take this check out for speed.
-		if(!isFinite(z)) {
-			console.log("z isNaN or not isFinite for (x,y): " + x + " , " + y);
-		}
+		//if(!isFinite(z)) {
+		//	console.log("z isNaN or not isFinite for (x,y): " + x + " , " + y);
+		//}
 
 		return z;
 	}
