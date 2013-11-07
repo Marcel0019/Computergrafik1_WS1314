@@ -137,10 +137,6 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
                 return;
             }
 
-            var incr_x = 1;
-            var incr_y = 1;
-            var n = 0;
-
             // Optionally draw start point as is the same
             // as the end point of the previous edge.
             // In any case, do not add an intersection for start point here,
