@@ -165,6 +165,11 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
                     if (e > 0) {
                         //descision variable e > 0
                         e = e - 2*dYAbs;
+
+                        //add intersection
+                        //always when e increases ( -> y increases)
+                        addIntersection(x,y,z,interpolationWeight,edgeStartVertexIndex,edgeEndVertexIndex,edgeStartTextureCoord,edgeEndTextureCoord);
+
                     } else {
                         //descision variable e < 0
                         y = y + dYSign;
@@ -201,6 +206,10 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
                 // Add every intersection as there can be only one per scan line.
                 // but not the end point, which is done in scanline.
                 framebuffer.set(x, y, getZ(x, y), color);
+
+                //add intersection
+                //always when y is driving variable (y always increases)
+                addIntersection(x,y,z,interpolationWeight,edgeStartVertexIndex,edgeEndVertexIndex,edgeStartTextureCoord,edgeEndTextureCoord);
 
                 } // Y == endY
             } //end of loop
@@ -262,7 +271,102 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
             // BEGIN exercise Texture
             // BEGIN exercise Scanline
 
-            // For the start edge we need the last edge with derivative !=0,
+
+            var _prevEnd = 0; // Endpunkt der vorhergehenden Kante = Startpunkt des Polygons
+            var _prevStart = polygon.length; // Anzahl der Polygonpunkt = Startpunkt letzter Punkt
+            lastIndex = _prevStart;
+            // Array der Polygonpunkte wird rückwärts traversiert, bis Y des Vorgängers ungleich Y des aktuellen Punktes
+            while(vertices[polygon[_prevEnd]][1] == vertices[polygon[--_prevStart]][1]){
+                _prevEnd = _prevStart;
+                if(_plength == 0){
+                    console.log("Das ist kein Polygon"); // Alle Punkte geprüft, Y ist immer gleich
+                    break;
+                }
+            }
+            // Derivation values for start
+            var _prevderivation = vertices[polygon[_prevEnd]][1]-vertices[polygon[_prevStart]][1];
+            var _prevderivative = _prevderivation >= 0 ? 1 : -1;
+
+            console.log("Derivation of previous edge: " + _prevderivative);
+
+            console.log("Polygon: " + polygon);
+            console.log("Vertices: " + vertices);
+            // Also after the rasterization with floor we need a valid triangle.
+
+
+            // First raster only the edges and, if requested, store intersections for filling.
+            // Loop over vertices/edges in polygon.
+            var index_start;
+            var index_end
+            for(var k = 0; k < lastIndex ; k++ ){
+
+                index_start = polygon[k];
+
+                if(k+1 == lastIndex){
+                    console.log("back to 0");
+                    index_end = polygon[0];
+                }
+                else{
+                    index_end = polygon[k+1];
+                }
+
+                // Determine start and end point of edge.
+                startPoint = vertices[index_start];
+                endPoint = vertices[index_end];
+
+
+                // Connect edge to next or to first vertex to close the polygon.
+                // ???
+
+                // Convert parameters to integer values.
+                // Use Math.floor() for integer cast and rounding of X-Y values.
+                // Leave Z as floating point for comparisons in z-buffer.
+                // Aktueller Startpunkt
+                currX = Math.floor(startPoint[0]);
+                currY = Math.floor(startPoint[1]);
+                currZ = startPoint[2];
+                // Aktueller Endpunkt
+                nextX = Math.floor(endPoint[0]);
+                nextY = Math.floor(endPoint[1]);
+                nextZ = endPoint[2];
+
+if(currY == nextY) {
+
+continue;
+            }
+
+
+                // Calculate current and save last derivative.
+                //console.log("derivative:" + derivative + " lastDerivative " + lastDerivative);
+                var _currderivation = nextY-currY;
+                var _currderivative = _currderivation >= 0 ? 1 : -1;
+
+                if((_currderivative+_prevderivative) == 0 && _currderivative !== 0){
+                    console.log("Startpunkt hinzufügen");
+                    // es bleibt wie es ist
+                }
+                else{
+                    console.log("Startpunkt entfällt");
+                }
+
+                //console.log("Handeled is edge from: " + vertices[k] + " to " + vertices[k-1]);
+                //console.log("in Integers: " + currX + " - "+ currY + " - "+ currZ + " - "+ nextX + " - "+ nextY + " - "+ nextZ);
+                //console.log("CurrEdge derivative: " + _currderivative);
+                //console.log("PrevEdge derivative: " + _prevderivative);
+
+
+                // Set texture coordinate uv-vector/array of the current edge for later interpolation.
+
+                // drawLineBresenham(currX, currY, currZ, nextX, nextY, nextZ, color, true, edgeStartVertexIndex, edgeEndVertexIndex, edgeStartTextureCoord, edgeEndTextureCoord);
+
+                drawLineBresenham(currX, currY, currZ, nextX, nextY, nextZ, color, true, 0, 0, 0, 0);
+
+            }
+            _prevderivative = _currderivative;
+
+
+
+                // For the start edge we need the last edge with derivative !=0,
             // Pre-calculate the derivatives for last edge !=0 of polygon.
 
             // Also after the rasterization with floor we need a valid triangle.
