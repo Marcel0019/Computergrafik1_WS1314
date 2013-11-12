@@ -17,9 +17,12 @@ function(exports, scenegraph, animation) {
 	 */
 	function init() {
 
-		var cubeNode = scenegraph.createNodeWithModel("cube", "cube", {scale:300});
-		cubeNode.rotateTo([1.6, -3.87, 0]);
-		
+		//var cubeNode = scenegraph.createNodeWithModel("cube", "cube", {scale:300});
+		//cubeNode.rotateTo([1.6, -3.87, 0]);
+
+        //used for testing Scanline
+        var insideOutPolyNode = scenegraph.createNodeWithModel("insideOutPoly", "insideOutPoly");
+
 		return;
 
 		//var cubeNode = scenegraph.createNodeWithModel("cube", "cube", {scale:100, textureURL:"brickWall.jpg"});		
@@ -34,7 +37,7 @@ function(exports, scenegraph, animation) {
 		var cubeNode5 = scenegraph.createNodeWithModel("cube 3x3 texture", "cube", {scale:50, textureURL:"cubeColor.png", sixFacesTexture:true});
 		var cubeNode6 = scenegraph.createNodeWithModel("cube Escher texture", "cube", {scale:200, textureURL:"EscherCubeFish.gif", sixFacesTexture:true});
 		
-		var insideOutPolyNode = scenegraph.createNodeWithModel("insideOutPoly", "insideOutPoly");
+		//var insideOutPolyNode = scenegraph.createNodeWithModel("insideOutPoly", "insideOutPoly");
 
 		var diamondNode = scenegraph.createNodeWithModel("diamond", "diamond");
 
