@@ -42,7 +42,7 @@ require(["dojo", "dojo/parser", "dojo/domReady!"], function(dojo) {
             // to work on MacBook:
             // "cog1" : "/Users/marcelwallbaum/github/Computergrafik1-WS1314/cog1"
             // to work on Windows:
-			 "cog1" : "file:///C:/Users/Admin/PhpstormProjects/Computergrafik1_WS1314/cog1"
+			 "cog1" : "file:///Z:/Beuth Hochschule/Semester 6/Computergrafik 1/CG1_WS1314_final/Computergrafik1_WS1314/cog1"
             // to work on Server:
             // "cog1" : "/marcelwallbaum/cog1/"
 		},
