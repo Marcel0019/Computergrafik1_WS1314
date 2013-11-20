@@ -348,7 +348,6 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
                     if (derivative + lastDerivative == 0) {
                         addIntersection(currX, currY);
                     }
-
                 } else {
                     // If current derivative ==0 then keep the last one.
                     derivative = lastDerivative;
