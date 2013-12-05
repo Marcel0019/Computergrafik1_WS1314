@@ -424,20 +424,50 @@ define(["exports", "data", "glMatrix"], function(data, exports) {
 		if(n == null){
 			console.log("Error: Parameter normal n is null.");
 		}
-		
+
+        // MYCODE
+
 		// BEGIN exercise Z-Buffer
 
 		// Two edge-vectors dim 3:
+        // We do not use the matrix lib here.
 
-				// Check for polygon vertex exist (common index error in data).
+        //berechnen von 2 Vektoren
+      //  var vec1 = vec3.subtract(vertices[polygon[1][0]], vertices[polygon[0]]);
+        
 
-					// We do not use the matrix lib here.
+		// Calculate normal vector from vector product of edges.
+		// Check that e[u] are not parallel.
 
-			// Calculate normal vector from vector product of edges.
+        // Check for polygon vertex exist (common index error in data).
+        //get edges
+        var edge1 = vertices[polygon[0]];
+        var edge2 = vertices[polygon[1]];
+        var edge3 = vertices[polygon[2]];
 
-			// Check that e[u] are not parallel.
+        //define vectors
+        var vec1 = new Array(edge2[0] - edge1[0],edge2[1] - edge1[1],edge2[1] - edge1[1]);
+        var vec2 = new Array(edge3[0] - edge2[0],edge3[1] - edge2[1],edge3[2] - edge2[2]);
 
-				// Normal exist, otherwise try next edges.
+        //prüfe auf Parallelität
+        var p1 = vec1[0] / vec2[0];
+        var p2 = vec1[1] / vec2[1];
+        var p3 = vec1[2] / vec2[2];
+
+        if (p1 == p2 && p1 == p3) {
+            return [0, 0, 0];
+        }
+
+        //Kreuzprodukt um Normalenvektor zu bestimmen
+        n[0] = vec1[1]*vec2[2] - vec1[2]*vec2[1];
+        n[1] = vec1[2]*vec2[0] - vec1[0]*vec2[2];
+        n[2] = vec1[0]*vec2[1] - vec1[1]*vec2[0];
+
+        // Normal exist, otherwise try next edges.
+
+        return n;
+
+
 
 			// Set null-vector (alternative: positive z-direction) as default. 
 
@@ -446,7 +476,7 @@ define(["exports", "data", "glMatrix"], function(data, exports) {
 
 		
 		// Only  for template, comment this out for solution.
-		return 1;
+		//return 1;
 
 		// END exercise Z-Buffer
 	}

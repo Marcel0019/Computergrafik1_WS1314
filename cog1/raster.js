@@ -494,6 +494,7 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
 
             var horizontalClippingTest;
             var zTest;
+            var dz;
 
             // Raster the edges.
             assembleIntersectionForScanline(vertices, polygon, color, textureCoord, polygonTextureCoord, texture);
@@ -537,7 +538,16 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
 
                     // Fill line section inside polygon, loop x.
                    for (var x = x1.x; x <= x2.x; x++) {
-                        framebuffer.set(x, y, getZ(x, y), color);
+                       // calculate dz
+                       if (C == 0) {
+                           continue;
+                       }
+
+
+
+                       framebuffer.set(x, y, dz, color);
+                       dz += -(A / C);
+
                    }
                 }
                 // Set z shorthand.
@@ -633,19 +643,20 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
 
             // Project first vertex (could be any) on normal.
             // The result is the distance D of polygon plane to origin.
+            D = -(vertices[0][0]*normal[0] + vertices[0][1]*normal[1] + vertices[0][2]*normal[2]);
 
             // // Check result, applying the plane equation to the original polygon vertices.
-            // for(var i = 0; i < polygon.length; i++) {
-            // var p = polygon[i];
-            // var x = vertices[p][0];
-            // var y = vertices[p][1];
-            // var z = vertices[p][2];
-            // var zCalc = getZ(x, y);
-            // if(Math.abs(z - zCalc) > 0.001) {
-            // // console.log("Check failed  z "+z+" = "+zCalc);
-            // // console.log("Plane: A=" + A + " B=" + B + " C=" + C + " D=" + D);
-            // }
-            // };
+           // for(var i = 0; i < polygon.length; i++) {
+           //     var p = polygon[i];
+            //    var x = vertices[p][0];
+            //    var y = vertices[p][1];
+            //    var z = vertices[p][2];
+             //   var zCalc = getZ(x, y);
+            //    if(Math.abs(z - zCalc) > 0.001) {
+           //         console.log("Check failed  z "+z+" = "+zCalc);
+            //        console.log("Plane: A=" + A + " B=" + B + " C=" + C + " D=" + D);
+             //   }
+          //  };
 
             // END exercise Z-Buffer
 
@@ -711,6 +722,7 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
         function getZ(x, y) {
             // We assume that the plane equation is up-to-date
             // with the current polygon.
+            inverseC = 1 / C;
             var z = -(A * x + B * y + D) * inverseC;
 
             // Take this check out for speed.
