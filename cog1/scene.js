@@ -28,7 +28,7 @@ function(exports, dojo, domStyle, app, scenegraph, createScene, animation, raste
 	// Show a grid along the axis-planes for debug.
 	var showGrid = false;
 	// Perform backface culling.
-	var backfaceCulling = false;
+	var backfaceCulling = true;
 	// Clean the data on initialization.
 	var cleanDataOnInit = false;
 	// Set true if triangulation should be performed on the data on init.
@@ -398,8 +398,12 @@ function(exports, dojo, domStyle, app, scenegraph, createScene, animation, raste
 			// BEGIN exercise Back-Face Culling
 
 			// Back-face culling.
-			// Check if polygon is facing away from the camera (in negative z-direction).
 
+			// Check if polygon is facing away from the camera (in negative z-direction).
+            if (normal[p]) {
+                if(backfaceCulling && (vec3.dot([0,0,-1],normal) == 0))
+                    return false;
+            }
 			// END exercise Back-Face Culling
 						
 			// Register the current polygon with the shader.
@@ -450,6 +454,8 @@ function(exports, dojo, domStyle, app, scenegraph, createScene, animation, raste
 
 			// Back-face culling.
 			// Check if polygon is facing away from the camera (in negative z-direction).
+            if(backfaceCulling && (vec3.dot(polygon,normal) < 0))
+                return false;
 
 			// END exercise Back-Face Culling
 
