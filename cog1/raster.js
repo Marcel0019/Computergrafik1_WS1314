@@ -114,7 +114,7 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
             // Loop variables.
             var x = startX;
             var y = startY;
-            var z = startZ;
+            var z = 0;
 
             // z is linearly interpolated with delta dz in each step of the driving variable.
             var dz;
@@ -538,16 +538,7 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
 
                     // Fill line section inside polygon, loop x.
                    for (var x = x1.x; x <= x2.x; x++) {
-                       // calculate dz
-                       if (C == 0) {
-                           continue;
-                       }
-
-
-
-                       framebuffer.set(x, y, dz, color);
-                       dz += -(A / C);
-
+                        framebuffer.set(x, y, getZ(x,y), color);
                    }
                 }
                 // Set z shorthand.
@@ -640,23 +631,30 @@ define(["exports", "shader", "framebuffer", "data", "glMatrix"], //
             }
 
             // START exercise Z-Buffer
+            //Pre-calculate for of inverseC and AdivC speed-up.
+            inverseC = 1/C;
+            AdivC = A/C;
 
             // Project first vertex (could be any) on normal.
             // The result is the distance D of polygon plane to origin.
-            D = -(vertices[0][0]*normal[0] + vertices[0][1]*normal[1] + vertices[0][2]*normal[2]);
+            var p = polygon[0];
+            var x = vertices[p][0];
+            var y = vertices[p][1];
+            var z = vertices[p][2];
+            D = -(A*x + B*y + C*z);
 
             // // Check result, applying the plane equation to the original polygon vertices.
-           // for(var i = 0; i < polygon.length; i++) {
-           //     var p = polygon[i];
+            // for(var i = 0; i < polygon.length; i++) {
+            //     var p = polygon[i];
             //    var x = vertices[p][0];
             //    var y = vertices[p][1];
             //    var z = vertices[p][2];
-             //   var zCalc = getZ(x, y);
+            //   var zCalc = getZ(x, y);
             //    if(Math.abs(z - zCalc) > 0.001) {
-           //         console.log("Check failed  z "+z+" = "+zCalc);
+            //         console.log("Check failed  z "+z+" = "+zCalc);
             //        console.log("Plane: A=" + A + " B=" + B + " C=" + C + " D=" + D);
-             //   }
-          //  };
+            //   }
+            //  };
 
             // END exercise Z-Buffer
 

@@ -135,14 +135,13 @@ define(["exports", "scene"], function(exports, scene) {
         // Epsilon depends on the z-range of the scene.
         // Guess some decent epsilon (which may be >1 despite the name).
 
-			// The camera is in the origin looking in negative z-direction.
-            if (zBuf[indexZBuf] > z) {
-                return false;
-            }
+        // The camera is in the origin looking in negative z-direction.
+        if (zBuf[indexZBuf] > z) {
+            return false;
+        }
         zBuf[indexZBuf] = z;
 
 		// END exercise Z-Buffer
-
 
 		return true;
 	}
