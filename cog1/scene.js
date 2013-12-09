@@ -396,16 +396,14 @@ function(exports, dojo, domStyle, app, scenegraph, createScene, animation, raste
 			}
 
 			// BEGIN exercise Back-Face Culling
-
 			// Back-face culling.
 
 			// Check if polygon is facing away from the camera (in negative z-direction).
-            if (normal[p]) {
-                if(backfaceCulling && (vec3.dot([0,0,-1],normal) == 0))
-                    return false;
-            }
-			// END exercise Back-Face Culling
-						
+            if(backfaceCulling && (vec3.dot([0,0,1],normal) <= 0))
+                continue;
+
+            // END exercise Back-Face Culling
+
 			// Register the current polygon with the shader.
 			shader.setPolygon(p);
 
@@ -422,8 +420,10 @@ function(exports, dojo, domStyle, app, scenegraph, createScene, animation, raste
 			if(displayEdges) {
 				raster.scanlineStrokePolygon(vertices, polygon, lineColor3D);
 			}
-        // count polys
-        polycount++;
+
+            // count polys
+            polycount++;
+
 		}
 	}
 
@@ -450,14 +450,14 @@ function(exports, dojo, domStyle, app, scenegraph, createScene, animation, raste
 			var polygon = polygons[p];
 			var normal = polygonNormals[p];
 
-			// BEGIN exercise Back-Face Culling
+            // BEGIN exercise Back-Face Culling
+            // Back-face culling.
 
-			// Back-face culling.
-			// Check if polygon is facing away from the camera (in negative z-direction).
-            if(backfaceCulling && (vec3.dot(polygon,normal) < 0))
-                return false;
+            // Check if polygon is facing away from the camera (in negative z-direction).
+            if(backfaceCulling && (vec3.dot([0,0,1],normal) <= 0))
+                continue;
 
-			// END exercise Back-Face Culling
+            // END exercise Back-Face Culling
 
 			// The average of all vertices as debug geometry for the normals.
 			polygonCenter = [0, 0, 0];
@@ -795,8 +795,8 @@ function(exports, dojo, domStyle, app, scenegraph, createScene, animation, raste
 
 	function toggleBackfaceCulling() {
 		backfaceCulling = !backfaceCulling;
-		setUpToDate();
-	}
+        setUpToDate();
+    }
 
 	function toggleDebugNormals() {
 		displayNormals = !displayNormals;
@@ -888,10 +888,10 @@ function(exports, dojo, domStyle, app, scenegraph, createScene, animation, raste
 	}
 
 	function getBackfaceCulling() {
-		return backfaceCulling;
-	}
+        return backfaceCulling;
+    }
 
-	function getShowGrid() {
+    function getShowGrid() {
 		return showGrid;
 	}
 
