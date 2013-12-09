@@ -434,19 +434,20 @@ define(["exports", "data", "glMatrix"], function(data, exports) {
         }
 
         // Calculate normal vector from vector product of edges.
-        var v1 = vec3.subtract(vertices[polygon[1]], vertices[polygon[0]], []);
-        var v2 = vec3.subtract(vertices[polygon[2]], vertices[polygon[1]], []);
+        var u = vec3.create(vertices[polygon[0]]);
+        var v = vec3.subtract(vec3.create(vertices[polygon[1]]), u);
+        var w = vec3.subtract(vec3.create(vertices[polygon[2]]), u);
 
         // cross product
-        n = vec3.cross(v1, v2, n);
+        n = vec3.cross(v, w, n);
 
         // if values of vector n = 0, then v1||v2
         if ( n[0] == 0 && n[1] == 0 && n[2] == 0) {
             return [0,0,0];
-        } else {
-            // else normalize n and return
-            return vec3.normalize(n);
         }
+
+        // normalize n and return
+        return vec3.normalize(n);
 
         // END exercise Z-Buffer
     }
