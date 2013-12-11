@@ -1,4 +1,3 @@
-
 /**
  * 3D Data Store for a model.
  *
@@ -395,15 +394,25 @@ define(["exports", "data", "glMatrix"], function(data, exports) {
 
         // BEGIN exercise Vertex-Normals
 
-        // Initialize normal array.
         // Loop over polygons.
+        for(var p = 0; p < this.polygonVertices.length; p++) {
+            var polygon = this.polygonVertices[p];
 
-        // Loop over vertices of polygon.
-
-        // Accumulate/add all polygon normals.
+            // Loop over vertices of polygon.
+            for(var e = 0; e < polygon.length; e++) {
+                // Accumulate/add all polygon normals.
+                if(polygon[e] < this.vertexNormals.length)
+                    vec3.add(this.vertexNormals[polygon[e]], this.polygonNormals[p]);
+                else
+                    console.log('Error: Invalid index for function calcuateVertexNormalsFromPolygonNormals', polygon[e]);
+            }
+        }
 
         // Normalize normals.
-
+        for(var n = 0; n < this.vertexNormals.length; n++) {
+            vec3.normalize(this.vertexNormals[n]);
+        }
+        
         // END exercise Vertex-Normals
     }
 
