@@ -897,15 +897,6 @@ mat4.multiply = function(mat, mat2, dest) {
 	return dest;
 };
 
-mat4.addition = function(mat, mat2, dest) {
-
-    for (var i = 0; i<mat.length; i++){
-        dest[i]=mat[i]+mat2[i];
-    }
-    return dest;
-
-}
-
 /*
  * mat4.multiplyVec3
  * Transforms a vec3 with the given matrix
@@ -1472,11 +1463,10 @@ mat4.str = function(mat) {
  * Sheares a matrix
  *
  * Params:
- * mat - mat4 to scale
- * smatrix -
- * vec - vec3 specifying the scale for each axis
+ * shear - shear matrix
+  * vec - vec3 specifying the shear for each axis
  *
- * Returns:
+ * Returns: shear matrix
  *
  */
 mat4.shear = function(shear, vec) {
@@ -1490,7 +1480,6 @@ mat4.shear = function(shear, vec) {
     shear[9] = z;
 
     return shear;
-
 };
 
 /*
