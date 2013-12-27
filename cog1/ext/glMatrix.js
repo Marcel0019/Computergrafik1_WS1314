@@ -356,7 +356,6 @@ vec3.str = function(vec) {
  */
 vec3.multiply = function(vec, factor, dest){
     if(!dest) { dest = vec; }
-    if (factor == "isNaN") {factor = 1;}
 
     dest[0] = vec[0] * factor;
     dest[1] = vec[1] * factor;

@@ -92,7 +92,7 @@ define(["exports", "data", "glMatrix"], function(exports, data) {
         ];
 
 		// octahedron triangles
-        instance.triangles = [
+        instance.polygonVertices = [
             [ 0, 4, 2 ],
             [ 2, 4, 1 ],
             [ 1, 4, 3 ],
@@ -198,107 +198,41 @@ define(["exports", "data", "glMatrix"], function(exports, data) {
             var b = vec3.create();
             var c = vec3.create();
 
+            // get normal vectors
             vec3.add(v0,v2,a);
             vec3.multiply(a,0.5);
+            vec3.normalize(a);
+
             vec3.add(v0,v1,b);
             vec3.multiply(b,0.5);
+            vec3.normalize(b);
+
             vec3.add(v1,v2,c);
             vec3.multiply(c,0.5);
+            vec3.normalize(c);
 
-            a = normalize(a);
-            b = normalize(b);
-            c = normalize(c);
+            // get new indices for vertices
+            var newIndex = [];
+            this.vertices.push(a);
+            newIndex[0] = this.vertices.length-1;
+            this.vertices.push(b);
+            newIndex[1] = this.vertices.length-1;
+            this.vertices.push(c);
+            newIndex[2] = this.vertices.length-1;
 
-            var aIndex = addVertices(this.vertices,a);
-            var bIndex = addVertices(this.vertices,b);
-            var cIndex = addVertices(this.vertices,c);
+            // Apply to new polygon.
+            newPolygon.push([this.polygonVertices[v][0],newIndex[1],newIndex[0]]);
+            newPolygon.push([newIndex[1],this.polygonVertices[v][1],newIndex[2]]);
+            newPolygon.push([newIndex[0],newIndex[1],newIndex[2]]);
+            newPolygon.push([newIndex[0],newIndex[2],this.polygonVertices[v][2]]);
 
-
-            console.log("Calculate new vertex "+aIndex);
-
-
-            //console.log("New vertex exists "+v+"->"+newIndex[v]+" : "+this.vertices[p[v]]+" + "+ this.vertices[p[next]]+" = "+ newVertex);
-
-            // Assemble new polygons.
-            p.push([this.polygonVertices[v][0],bIndex,aIndex]);
-            p.push([bIndex,this.polygonVertices[v][1],cIndex]);
-            p.push([aIndex,bIndex,cIndex]);
-            p.push([aIndex,cIndex,this.polygonVertices[v][2]]);
-
-            // Assure mathematical positive order to keep normals pointing outwards.
-            // Triangle in the center.
-
-            // Triangle in the corners.
-
-            //console.log("Assemble new polygons "+v+" : "+p[v]+" , "+ newIndex[nextButOne]+" , "+ newIndex[v]);
         }
         // Swap result.
-        this.polygonVertices = p;
+        this.polygonVertices = newPolygon;
         // Recursion.
         devide_all.call(this, recursionDepth, nbRecusions+1);
 
-
-
-		// Assemble divided polygons in an new array.
-
-			// Indices of the last three new vertices.
-
-				// Calculate new vertex in the middle of edge.
-
-				// Check if the new vertex exists already.
-				// This happens because edges always belong to two triangles.
-
-					// Remember index of new vertex.
-
-					//console.log("Calculate new vertex "+v+"->"+newIndex[v]+" : "+vertices[p[v]]+" + "+ vertices[p[next]]+" = "+ newVertex);
-
-					// Use the existing vertex for the new polygon.
-
-					//console.log("New vertex exists "+v+"->"+newIndex[v]+" : "+this.vertices[p[v]]+" + "+ this.vertices[p[next]]+" = "+ newVertex);
-
-			// Assemble new polygons.
-			// Assure mathematical positive order to keep normals pointing outwards.
-			// Triangle in the center.
-
-			// Triangle in the corners.
-
-				//console.log("Assemble new polygons "+v+" : "+p[v]+" , "+ newIndex[nextButOne]+" , "+ newIndex[v]);
-
-		// Swap result.
-
-		// Recursion.
-
 	// END exercise Sphere
-    }
-
-    function calcMiddle (x,y,z) {
-        x[0] = (v0[0] + v2[0]) * 0.5;
-        x[1] = (v0[1] + v2[1]) * 0.5;
-        x[2] = (v0[2] + v2[2]) * 0.5;
-    }
-
-    function normalize (arr) {
-        // move Point so that distance to P0(0,0,0) equal 1
-        var len = Math.sqrt(arr[0]*arr[0]+arr[1]*arr[1]+arr[2]*arr[2]);
-        arr[0] = arr[0]/len;
-        arr[1] = arr[1]/len;
-        arr[2] = arr[2]/len;
-        return arr;
-    }
-
-    function addVertices(v, point) {
-        //console.log(dojo.indexOf(p, triangle));
-        var index = dojo.indexOf(v, point);
-        // Check if the new vertex exists already.
-        // This happens because edges always belong to two triangles.
-        if ( index < 0) {
-            v.push(point);
-            // Remember index of new vertex.
-            return v.length-1;
-        } else {
-            // Use the existing vertex for the new polygon.
-            return index;
-        }
     }
 
 });
