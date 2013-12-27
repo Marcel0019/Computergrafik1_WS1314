@@ -343,6 +343,29 @@ vec3.str = function(vec) {
 };
 
 /*
+ * vec3.multiply
+ * CMultiplies a vector with a given factor
+ *
+ * Params:
+ * vec - vec3, vector
+ * factor - factor to multiply the vec with
+ * dest - Optional, vec3 receiving operation result. If not specified result is written to vec
+ *
+ * Returns:
+ * dest if specified, vec otherwise
+ */
+vec3.multiply = function(vec, factor, dest){
+    if(!dest) { dest = vec; }
+    if (factor == "isNaN") {factor = 1;}
+
+    dest[0] = vec[0] * factor;
+    dest[1] = vec[1] * factor;
+    dest[2] = vec[2] * factor;
+
+    return dest;
+};
+
+/*
  * mat3 - 3x3 Matrix
  */
 var mat3 = {};
