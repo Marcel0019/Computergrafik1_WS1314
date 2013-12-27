@@ -23,13 +23,25 @@ function(exports, scenegraph, animation) {
 	        var insideOutPolyNode = scenegraph.createNodeWithModel("insideOutPoly", "insideOutPoly");
 	        //used for testing cleanData
 	        var dirtyTeapotNode = scenegraph.createNodeWithModel("dirtyTeapot", "teapot_dirty", {color:8});
-	        //tbd
-	        //var sphereNode = scenegraph.createNodeWithModel("sphere", "sphere", {color:8});
+	
+	        //sphere exercise
+	        var sphereNode = scenegraph.createNodeWithModel("sphere (recursionDepth:1)", "sphere", {recursionDepth:1});
+	        sphereNode.translate([0,500,0]);
+	        sphereNode.scale([-0.3,-0.3,-0.3]);
+	
+	        var sphereNode2 = scenegraph.createNodeWithModel("sphere2 (recursionDepth:2)", "sphere", {recursionDepth:2});
+	        sphereNode2.translate([-350,0,0]);
+	        sphereNode2.scale([-0.2,-0.2,-0.2]);
+	
+	        var sphereNode3 = scenegraph.createNodeWithModel("sphere3 (recursionDepth:3)", "sphere");
+	        sphereNode3.translate([350,0,0]);
 	
 	        // Set visibility of nodes (hide: set to false).
 	        insideOutPolyNode.setVisible(false);
 	        dirtyTeapotNode.setVisible(false);
-	        //sphereNode.setVisible(false)
+	        sphereNode.setVisible(false);
+	        sphereNode2.setVisible(false);
+	        sphereNode3.setVisible(false);
 	
 	        return;
 
