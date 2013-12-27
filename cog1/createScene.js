@@ -19,11 +19,19 @@ function(exports, scenegraph, animation) {
 
 		var cubeNode = scenegraph.createNodeWithModel("cube", "cube", {scale:300});
 		cubeNode.rotateTo([1.6, -3.87, 0]);
-
-        //used for testing Scanline
-        //var insideOutPolyNode = scenegraph.createNodeWithModel("insideOutPoly", "insideOutPoly");
-
-		return;
+	        //used for testing Scanline
+	        var insideOutPolyNode = scenegraph.createNodeWithModel("insideOutPoly", "insideOutPoly");
+	        //used for testing cleanData
+	        var dirtyTeapotNode = scenegraph.createNodeWithModel("dirtyTeapot", "teapot_dirty", {color:8});
+	        //tbd
+	        //var sphereNode = scenegraph.createNodeWithModel("sphere", "sphere", {color:8});
+	
+	        // Set visibility of nodes (hide: set to false).
+	        insideOutPolyNode.setVisible(false);
+	        dirtyTeapotNode.setVisible(false);
+	        //sphereNode.setVisible(false)
+	
+	        return;
 
 		//var cubeNode = scenegraph.createNodeWithModel("cube", "cube", {scale:100, textureURL:"brickWall.jpg"});		
 		var cubeNode1 = scenegraph.createNodeWithModel("cube 1", "cube", {scale:70, textureURL:"stoneWall.jpg"});
