@@ -211,6 +211,9 @@ define(["exports", "data", "glMatrix"], function(exports, data) {
             vec3.multiply(c,0.5);
             vec3.normalize(c);
 
+            // Check if the new vertex exists already.
+            // TBD
+
             // get new indices for vertices
             var newIndex = [];
             this.vertices.push(a);

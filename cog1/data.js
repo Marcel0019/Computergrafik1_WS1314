@@ -222,7 +222,7 @@ define(["exports", "data", "glMatrix"], function(data, exports) {
                     if(vectorsEqual(this.vertices[v2], this.vertices[v1])) {
                         // write v2 into the array for pre-check
                         vcheck[v2] = true;
-                        console.log("Clean Vertex Data: "+v2+" -> "+v1);
+                        //console.log("Clean Vertex Data: "+v2+" -> "+v1);
                         // Loop over polygons.
                         for(var p = 0; p < this.polygonVertices.length; p++) {
                             // Loop vertices of polygon.
