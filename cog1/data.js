@@ -208,30 +208,35 @@ define(["exports", "data", "glMatrix"], function(data, exports) {
     function cleanData(){
 
         // BEGIN exercise Clean-Data
+        // array for vector check
+        var vcheck = [];
 
-        // List of index pairs to merge.
-        // Index of the list is the vertex to modify.
+        // Loop over vertices to find equal vertices.
+        for(var v1=0; v1 < this.vertices.length; v1++) {
 
-        // Find equal vertices.
-
-        // Take the lowest index as replacement.
-
-        //console.log("Clean Vertex Data: "+v2+" -> "+v1);
-
-
-        // Replace indices of equal vertices,
-        // by always using the first index.
-        // Loop over polygons.
-
-        // Loop vertices of polygon.
-
-        // Check for polygon vertex exist in merge list and replace.
-
-
-        // Dump the cleaned data to copy it from the console into a clean model.
-        //console.log(JSON.stringify(this.vertices));
-        //console.log(JSON.stringify(this.polygonVertices));
-
+            // find out if vector was already checked
+            if (vcheck[v1] != true) {
+                // get vector2 and loop(v2)
+                for(var v2 = v1+1; v2 < this.vertices.length; v2++) {
+                    // determine equal vectors by comparing element-wise.
+                    if(vectorsEqual(this.vertices[v2], this.vertices[v1])) {
+                        // write v2 into the array for pre-check
+                        vcheck[v2] = true;
+                        console.log("Clean Vertex Data: "+v2+" -> "+v1);
+                        // Loop over polygons.
+                        for(var p = 0; p < this.polygonVertices.length; p++) {
+                            // Loop vertices of polygon.
+                            for(var v = 0; v < this.polygonVertices[p].length; v++) {
+                                // set results
+                                if(v2 == this.polygonVertices[p][v]) {
+                                    this.polygonVertices[p][v] = v1;
+                                }
+                            }
+                        }
+                    }
+                }
+           }
+        }
         // END exercise Clean-Data
 
         // Re-calculate the vertex normals.
