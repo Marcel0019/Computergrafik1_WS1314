@@ -67,20 +67,6 @@ define(["exports", "data", "glMatrix"], function(exports, data) {
 
 		// BEGIN exercise Sphere
 
-		// Starting with octahedron vertices
-        //      a = (0+2)/2
-        //      b = (0+1)/2
-        //      c = (1+2)/2
-        //
-        //        1
-        //       /\        Normalize a, b, c
-        //      /  \
-        //    b/____\ c    Construct new triangles
-        //    /\    /\       t1 [0,b,a]
-        //   /  \  /  \      t2 [b,1,c]
-        //  /____\/____\     t3 [a,b,c]
-        // 0      a     2    t4 [a,c,2]
-
         // vertices
         instance.vertices = [
             [ 1.0, 0.0, 0.0],
@@ -188,46 +174,61 @@ define(["exports", "data", "glMatrix"], function(exports, data) {
         // Assemble divided polygons in an new array.
         var newPolygon = [];
         for(var v = 0; v < this.polygonVertices.length; v++) {
-            // Indices of the last three new vertices.
-            var v0 = this.vertices[this.polygonVertices[v][0]];
-            var v1 = this.vertices[this.polygonVertices[v][1]];
-            var v2 = this.vertices[this.polygonVertices[v][2]];
 
-            // Calculate new vertex in the middle of edge.
+            // Starting with octahedron vertices
+            //      a = (0+2)/2
+            //      b = (0+1)/2
+            //      c = (1+2)/2
+            //
+            //        p1
+            //       /\        Normalize a, b, c
+            //      /  \
+            //    b/____\ c    Construct new triangles
+            //    /\    /\       t1 [0,b,a]
+            //   /  \  /  \      t2 [b,1,c]
+            //  /____\/____\     t3 [a,b,c]
+            // p0    a     p2    t4 [a,c,2]
+
+            // get points of triangle
+            var p0 = this.polygonVertices[v][0];
+            var p1 = this.polygonVertices[v][1];
+            var p2 = this.polygonVertices[v][2];
+
+            //console.log("Points: " +p0+ "|" +p1+  "|" +p2);
+
+            //get vectors
+            var v0 = this.vertices[p0];
+            var v1 = this.vertices[p1];
+            var v2 = this.vertices[p2];
+
+            //create new vectors
             var a = vec3.create();
             var b = vec3.create();
             var c = vec3.create();
-
-            // get normal vectors
             vec3.add(v0,v2,a);
-            vec3.multiply(a,0.5);
-            vec3.normalize(a);
-
             vec3.add(v0,v1,b);
-            vec3.multiply(b,0.5);
-            vec3.normalize(b);
-
             vec3.add(v1,v2,c);
+            vec3.multiply(a,0.5);
+            vec3.multiply(b,0.5);
             vec3.multiply(c,0.5);
+            // normalize
+            vec3.normalize(a);
+            vec3.normalize(b);
             vec3.normalize(c);
 
-            // Check if the new vertex exists already.
-            // TBD
-
-            // get new indices for vertices
-            var newIndex = [];
+            //get new indices for vertices
+            var indexA = this.vertices.length;
             this.vertices.push(a);
-            newIndex[0] = this.vertices.length-1;
+            var indexB= this.vertices.length;
             this.vertices.push(b);
-            newIndex[1] = this.vertices.length-1;
+            var indexC = this.vertices.length;
             this.vertices.push(c);
-            newIndex[2] = this.vertices.length-1;
-
-            // Apply to new polygon.
-            newPolygon.push([this.polygonVertices[v][0],newIndex[1],newIndex[0]]);
-            newPolygon.push([newIndex[1],this.polygonVertices[v][1],newIndex[2]]);
-            newPolygon.push([newIndex[0],newIndex[1],newIndex[2]]);
-            newPolygon.push([newIndex[0],newIndex[2],this.polygonVertices[v][2]]);
+            
+            // construct new Polygon (triangle)
+            newPolygon.push([p0,indexB,indexA]);
+            newPolygon.push([indexB,p1,indexC]);
+            newPolygon.push([indexA,indexB,indexC]);
+            newPolygon.push([indexA,indexC,p2]);
 
         }
         // Swap result.
